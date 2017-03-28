@@ -114,11 +114,12 @@ public class Snake extends TimerTask implements KeyListener {
 
             int headX = snake.get(0)[0];    //Where's the head? New head square is relative to exising head.
             int headY = snake.get(0)[1];
-
+            //snake leaves the right side and reappear from the left side and vise versa.
             if(headX<0)
                 headX= xSquares;
             else if(headX>xSquares)
                 headX =0;
+            //snake leaves the down side and reappear from the upper side and vise versa.
             if(headY<0)
                 headY = ySquares;
             else if(headY>ySquares)
