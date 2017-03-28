@@ -10,10 +10,10 @@ import java.util.*;
 
 public class Snake extends TimerTask implements KeyListener {
 
-    int height = 300; int width = 400;   //pixels
+    int height = 1000; int width = 1800;   //pixels
     int squareSize = 50;
     
-    int speed = 300;   // 300 = update every 300 ms.  Larger number = slower game
+    int speed = 200;   // 300 = update every 300 ms.  Larger number = slower game
 
     int xSquares = width/squareSize;
     int ySquares = height/squareSize;
@@ -73,13 +73,13 @@ public class Snake extends TimerTask implements KeyListener {
             g.fillRect(0, 0, width, height);
 
             if (gameOver > 6) {                 // If gameOver indicates game is won, display message
-                g.setColor(Color.GREEN);
+                g.setColor(Color.BLUE);
                 g.drawString(">-o~~~~~~~~~~~~~  SNAKE  ~~~~~~~~~~~~~o-<", 50, 50);    //  "art"
                 g.drawString("!!!! YOU WON !!! score: " + score, 100, 100);
             }
 
             else if (gameOver > 0 ) {          // If gameOver indicates game is over (won, lost, whatever) display score and countdown to next game
-                g.setColor(Color.GREEN);
+                g.setColor(Color.RED);
                 g.drawString(">-o~~~~~~~~~~~~~  SNAKE  ~~~~~~~~~~~~~o-<", 50, 50);
 
                 g.drawString("GAME OVER score: " + score, 120, 100);
@@ -91,7 +91,7 @@ public class Snake extends TimerTask implements KeyListener {
                 g.setColor(Color.BLUE);
                 g.fillRect(kibble[0] * squareSize, kibble[1] * squareSize, squareSize, squareSize);
 
-                g.setColor(Color.RED);
+                g.setColor(Color.GREEN);
                 for (int[] square : snake) {
                     g.fillRect(square[0] * squareSize, square[1] * squareSize, squareSize, squareSize);
                 }
@@ -115,6 +115,15 @@ public class Snake extends TimerTask implements KeyListener {
             int headX = snake.get(0)[0];    //Where's the head? New head square is relative to exising head.
             int headY = snake.get(0)[1];
 
+            if(headX<0)
+                headX= xSquares;
+            else if(headX>xSquares)
+                headX =0;
+            if(headY<0)
+                headY = ySquares;
+            else if(headY>ySquares)
+                headY = 0;
+
             int[] newHead = {headX + nextMove[0], headY + nextMove[1]};   //create new head
 
             if (contains(newHead, snake)) {   //Is new head in snake? Snake ran into it's own body, game over.
@@ -137,10 +146,6 @@ public class Snake extends TimerTask implements KeyListener {
             headX = newHead[0];    //Convenience variables for new head x and y
             headY = newHead[1];
 
-            if ((headX < 0 || headX > xSquares) || (headY < 0 || headY > ySquares)) {   //Head outside board? Snake hit wall, game over
-                gameOver = clockTicksToRestart;
-                return;
-            }
 
             if (headX == kibble[0] && headY == kibble[1]) {      //Is kibble in same square as snake head? Snake ate kibble.
                 score++;                              // increase score
